@@ -1,0 +1,297 @@
+/* Steady Start VA: one shared stylesheet. Plain CSS, no scripts. Always light. */
+
+/* Fonts are served from the fonts folder. Nothing is loaded from other sites. */
+@font-face {
+  font-family: "Source Serif 4";
+  src: url("fonts/source-serif-4-600.woff2") format("woff2");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Nunito Sans";
+  src: url("fonts/nunito-sans-400.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Nunito Sans";
+  src: url("fonts/nunito-sans-700.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Colors */
+:root {
+  color-scheme: only light;   /* never switch to dark */
+  --bg: #FAF7F2;              /* warm cream */
+  --card: #FFFFFF;
+  --card-edge: #E5DFD7;
+  --sage: #5E8C61;            /* main accent */
+  --sage-dark: #3D6B40;       /* links, hover, heading accents */
+  --sage-pale: #EFF5EF;       /* highlight boxes */
+  --sage-pale-edge: #C5D9C6;
+  --gold: #C4973B;            /* used sparingly */
+  --fg: #2C2925;
+  --fg-2: #5C5650;            /* secondary text */
+  --fg-3: #8A837B;            /* small print: too faint for small text on cream, so not used for words */
+  --urgent-bg: #F3EDE4;
+  --shadow: 0 1px 2px rgba(44, 41, 37, 0.05), 0 3px 10px rgba(44, 41, 37, 0.04);
+  --radius: 14px;
+}
+
+/* Base */
+*, *::before, *::after { box-sizing: border-box; }
+html { font-size: 100%; -webkit-text-size-adjust: 100%; text-size-adjust: 100%; background: var(--bg); }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: "Nunito Sans", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  font-size: 1.125rem;        /* 18px */
+  line-height: 1.6;
+  text-align: left;
+  overflow-wrap: break-word;
+}
+.wrap {
+  max-width: 40rem;           /* 640px */
+  margin: 0 auto;
+  padding-left: max(1.25rem, env(safe-area-inset-left, 0px));
+  padding-right: max(1.25rem, env(safe-area-inset-right, 0px));
+}
+
+a { color: var(--sage-dark); text-underline-offset: 0.18em; text-decoration-thickness: 0.08em; }
+a:hover { text-decoration-thickness: 0.14em; }
+a:focus-visible {
+  outline: 3px solid var(--sage-dark);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+.skip {
+  position: absolute;
+  left: -999rem;
+  top: 0;
+  background: var(--card);
+  color: var(--fg);
+  padding: 0.75rem 1rem;
+}
+.skip:focus { left: 0; z-index: 1; }
+
+/* Urgent help strip */
+.urgent { background: var(--urgent-bg); color: var(--fg); font-size: 1rem; border-bottom: 1px solid var(--card-edge); }
+.urgent .wrap {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 1.5rem;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 0.4rem;
+  padding-bottom: 0.4rem;
+}
+.urgent p { margin: 0; }
+.urgent a { color: var(--fg); display: inline-block; padding: 0.4rem 0; }
+
+/* Header */
+.site-head { background: var(--card); border-bottom: 1px solid var(--card-edge); }
+.site-head .wrap { padding-top: 0.75rem; padding-bottom: 0.75rem; }
+.site-name { margin: 0; font-family: "Source Serif 4", Georgia, "Times New Roman", serif; font-weight: 600; font-size: 1.375rem; line-height: 1.3; }
+.site-name a { color: var(--sage-dark); text-decoration: none; display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.3rem 0; }
+.logo { flex: none; width: 1.75rem; height: 1.75rem; }
+.site-name a:hover { text-decoration: underline; }
+
+/* Pilot note */
+.pilot {
+  display: inline-block;
+  margin: 1.5rem 0 0;
+  padding: 0.35rem 0.875rem;
+  background: var(--sage-pale);
+  border: 1px solid var(--sage-pale-edge);
+  border-radius: var(--radius);
+  color: var(--fg-2);
+  font-size: 1rem;
+}
+
+/* Headings and text */
+main { padding-bottom: 1.5rem; }
+h1, h2 { font-family: "Source Serif 4", Georgia, "Times New Roman", serif; font-weight: 600; }
+h1 { font-size: 2rem; line-height: 1.2; margin: 2rem 0 1.5rem; }
+h1::after {                   /* small gold accent line */
+  content: "";
+  display: block;
+  width: 3rem;
+  height: 3px;
+  margin-top: 1rem;
+  border-radius: 2px;
+  background: var(--gold);
+}
+h2 { font-size: 1.375rem; line-height: 1.3; margin: 3rem 0 0.6rem; color: var(--sage-dark); }
+p { margin: 0 0 1.125rem; }
+ul { margin: 0 0 1.125rem; padding-left: 1.4rem; }
+li { margin: 0.4rem 0; }
+li::marker { color: var(--sage); }
+.lede { font-size: 1.25rem; line-height: 1.5; color: var(--fg-2); margin-bottom: 2.25rem; }
+
+/* Home: hills illustration above the heading */
+.hero { display: block; width: 100%; height: auto; margin-top: 1.25rem; border-radius: var(--radius); }
+.hero + h1 { margin-top: 1.5rem; }
+
+/* Home: topic cards */
+.topics { list-style: none; margin: 0 0 2.25rem; padding: 0; }
+.topics li { margin: 0 0 1rem; }
+.topics a {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.25rem;
+  padding: 1.125rem 1.25rem;
+  background: var(--card);
+  border: 1px solid var(--card-edge);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  color: var(--fg);
+  text-decoration: none;
+}
+.topics .title { display: block; font-weight: 700; font-size: 1.1875rem; line-height: 1.35; }
+.topics .line { display: block; color: var(--fg-2); font-size: 1rem; line-height: 1.45; margin-top: 0.2rem; }
+.topics a::after {            /* small sage arrow, drawn with borders so screen readers skip it */
+  content: "";
+  flex: none;
+  width: 0.6rem;
+  height: 0.6rem;
+  margin-right: 0.2rem;
+  border-right: 2.5px solid var(--sage);
+  border-bottom: 2.5px solid var(--sage);
+  transform: rotate(-45deg);
+}
+.topics .icon { flex: none; width: 2rem; height: 2rem; }
+.topics .text { flex: 1; min-width: 0; }
+.topics a:hover { border-color: var(--sage); box-shadow: 0 2px 4px rgba(44, 41, 37, 0.06), 0 6px 18px rgba(44, 41, 37, 0.08); }
+.topics a:hover .title { color: var(--sage-dark); }
+.topics a:focus-visible { border-radius: var(--radius); }
+.small-links { list-style: none; margin: 0; padding: 0; }
+.small-links li { margin: 0; }
+.small-links a { display: inline-block; padding: 0.6rem 0; }
+
+/* Answer pages */
+.back { display: inline-block; margin-top: 1.25rem; padding: 0.5rem 0; font-weight: 700; }
+.back + h1 { margin-top: 0.75rem; }
+
+/* Phone number card */
+.call {
+  background: var(--card);
+  border: 1px solid var(--card-edge);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 1.25rem 1.375rem 1.375rem;
+  margin: 1.75rem 0;
+}
+.call .who { font-weight: 700; margin: 0 0 0.5rem; }
+.call .note { color: var(--fg-2); margin: 0.75rem 0 0; }
+.call .who + .note { margin-top: 0; }
+
+/* Large, tappable phone number */
+.phone {
+  display: block;
+  padding: 0.35rem 0;
+  color: var(--sage);
+  font-size: 2rem;
+  font-weight: 700;
+  line-height: 1.2;
+  font-variant-numeric: tabular-nums;
+  text-decoration: none;
+  overflow-wrap: anywhere;
+}
+.phone span { display: block; color: var(--fg-2); font-size: 1rem; font-weight: 400; line-height: 1.4; }
+.phone:hover { color: var(--sage-dark); text-decoration: underline; text-decoration-thickness: 2px; }
+
+/* Main link on a page that has no phone number */
+.action {
+  display: block;
+  background: var(--sage-dark);
+  color: #FFFFFF;
+  border-radius: 10px;
+  padding: 0.875rem 1.125rem;
+  font-size: 1.1875rem;
+  font-weight: 700;
+  line-height: 1.3;
+  text-decoration: none;
+}
+.action:hover { background: #335A36; text-decoration: underline; }
+.action.inline { display: inline-block; }
+.phone:focus-visible, .action:focus-visible { outline-offset: 4px; border-radius: 10px; }
+
+/* "What to say" box */
+.say, .tip {
+  background: var(--sage-pale);
+  border: 1px solid var(--sage-pale-edge);
+  border-radius: var(--radius);
+  padding: 1.125rem 1.375rem 1.25rem;
+  margin: 1.75rem 0;
+}
+.say h2, .tip h2, .tip h3 { font-family: inherit; font-weight: 700; font-size: 1rem; margin: 0 0 0.35rem; color: var(--sage-dark); }
+.say p { margin: 0; font-size: 1.1875rem; }
+
+/* "Good to know" and "Did you know?" boxes */
+.tip p:last-child, .tip ul { margin-bottom: 0; }
+.tip li { margin: 0.6rem 0; }
+.tip .src { margin-top: 1.125rem; padding-top: 0.875rem; border-top-color: var(--sage-pale-edge); }
+
+/* Benefit cards: what it is, how to get it, good to know, source */
+.card {
+  background: var(--card);
+  border: 1px solid var(--card-edge);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 1.375rem 1.375rem 1.25rem;
+  margin: 1.75rem 0;
+  scroll-margin-top: 1rem;
+}
+.card > h2 { margin: 0 0 0.6rem; }
+.card > h3 { font-size: 1rem; font-weight: 700; margin: 1.25rem 0 0.25rem; }
+.card > p { margin-bottom: 0.75rem; }
+.card .phone { margin-bottom: 0.5rem; }
+.card .tip { margin: 1.25rem 0 0; padding: 1rem 1.125rem; }
+.card .src { margin-top: 1.25rem; padding-top: 0.875rem; }
+.card .src p:last-child { margin-bottom: 0; }
+
+/* Coverage table */
+.table-wrap {
+  overflow-x: auto;
+  margin: 0 0 1.125rem;
+  background: var(--card);
+  border: 1px solid var(--card-edge);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 0.25rem 1.375rem;
+}
+table { border-collapse: collapse; width: 100%; }
+th, td { text-align: left; vertical-align: top; padding: 0.875rem 0.75rem 0.875rem 0; border-bottom: 1px solid var(--card-edge); }
+th:last-child, td:last-child { padding-right: 0; }
+tbody tr:last-child th, tbody tr:last-child td { border-bottom: 0; }
+thead th { font-size: 1rem; color: var(--fg-2); }
+tbody th { font-weight: 400; }
+tbody td { font-weight: 700; }
+
+/* About page: a spot still to be filled in */
+.placeholder { border: 1px dashed var(--sage-pale-edge); border-radius: 10px; padding: 0.75rem 1rem; color: var(--fg-2); }
+
+/* Source and last checked */
+.src { margin-top: 3rem; padding-top: 1.125rem; border-top: 1px solid var(--card-edge); color: var(--fg-2); font-size: 1rem; }
+.src p { margin: 0 0 0.4rem; }
+.src a { display: inline-block; padding: 0.2rem 0; }
+
+/* Footer */
+footer { margin-top: 2.5rem; padding: 1.5rem 0 3.5rem; border-top: 1px solid var(--card-edge); color: var(--fg-2); font-size: 1rem; }
+footer p { margin: 0 0 0.75rem; }
+
+@media (min-width: 40rem) {
+  h1 { font-size: 2.5rem; }
+  .site-head .wrap { padding-top: 1rem; padding-bottom: 1rem; }
+}
+@media print {
+  .urgent, .skip, .back { display: none; }
+  body { background: #fff; color: #000; }
+}
