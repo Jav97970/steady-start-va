@@ -60,8 +60,8 @@ body {
 .wrap {
   max-width: 40rem;           /* 640px */
   margin: 0 auto;
-  padding-left: max(1.25rem, env(safe-area-inset-left, 0px));
-  padding-right: max(1.25rem, env(safe-area-inset-right, 0px));
+  padding-left: max(min(1.25rem, 4vw), env(safe-area-inset-left, 0px));
+  padding-right: max(min(1.25rem, 4vw), env(safe-area-inset-right, 0px));
 }
 
 a { color: var(--sage-dark); text-underline-offset: 0.18em; text-decoration-thickness: 0.08em; }
@@ -142,8 +142,6 @@ li::marker { color: var(--sage); }
 .topics a {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 1.25rem;
   padding: 1.125rem 1.25rem;
   background: var(--card);
   border: 1px solid var(--card-edge);
@@ -154,18 +152,13 @@ li::marker { color: var(--sage); }
 }
 .topics .title { display: block; font-weight: 700; font-size: 1.1875rem; line-height: 1.35; }
 .topics .line { display: block; color: var(--fg-2); font-size: 1rem; line-height: 1.45; margin-top: 0.2rem; }
-.topics a::after {            /* small sage arrow, drawn with borders so screen readers skip it */
-  content: "";
-  flex: none;
-  width: 0.6rem;
-  height: 0.6rem;
-  margin-right: 0.2rem;
-  border-right: 2.5px solid var(--sage);
-  border-bottom: 2.5px solid var(--sage);
-  transform: rotate(-45deg);
-}
-.topics .icon { flex: none; width: 2rem; height: 2rem; }
 .topics .text { flex: 1; min-width: 0; }
+/* The icon and arrow are decoration. They show only while the card is wider than about 15 times
+   its own text size (15em). On a narrow phone, or with large text, they collapse to nothing so the words
+   get the full width. This depends on the text size itself, so it works however the text was enlarged. */
+.topics .icon, .topics .arrow { flex: none; overflow: hidden; }
+.topics .icon { height: 2rem; width: clamp(0px, calc((100% - 15em) * 999), 2rem); margin-right: clamp(0px, calc((100% - 15em) * 999), 1.25rem); }
+.topics .arrow { height: 1rem; width: clamp(0px, calc((100% - 15em) * 999), 0.625rem); margin-left: clamp(0px, calc((100% - 15em) * 999), 1.25rem); }
 .topics a:hover { border-color: var(--sage); box-shadow: 0 2px 4px rgba(44, 41, 37, 0.06), 0 6px 18px rgba(44, 41, 37, 0.08); }
 .topics a:hover .title { color: var(--sage-dark); }
 .topics a:focus-visible { border-radius: var(--radius); }
@@ -197,17 +190,15 @@ li::marker { color: var(--sage); }
   display: block;
   padding: 0.35rem 0;
   color: var(--sage);
-  font-size: min(2rem, calc((100vw - 5.4rem) / 8.2));   /* shrinks so the number always fits on one line */
+  font-size: clamp(1.5rem, 9.5vw, 2rem);
   font-weight: 700;
   line-height: 1.2;
   font-variant-numeric: tabular-nums;
   text-decoration: none;
-  white-space: nowrap;
 }
-.phone span { white-space: normal; }
-a[href^="tel:"], a[href^="sms:"], .nowrap { white-space: nowrap; }   /* never break inside a phone number */
-.phone span { display: block; color: var(--fg-2); font-size: 1rem; font-weight: 400; line-height: 1.4; }
-.phone:hover { color: var(--sage-dark); text-decoration: underline; text-decoration-thickness: 2px; }
+.phone .label { display: block; color: var(--fg-2); font-size: 1rem; font-weight: 400; line-height: 1.4; }
+.phone:hover { color: var(--sage-dark); }
+.phone:hover .num { text-decoration: underline; text-decoration-thickness: 2px; }
 
 /* Main link on a page that has no phone number */
 .action {
@@ -286,6 +277,10 @@ tbody td { font-weight: 700; }
 footer { margin-top: 2.5rem; padding: 1.5rem 0 3.5rem; border-top: 1px solid var(--card-edge); color: var(--fg-2); font-size: 1rem; }
 footer p { margin: 0 0 0.75rem; }
 
+/* Side padding shrinks with the screen so text keeps as much width as possible */
+.topics a, .call, .card, .say, .tip, .table-wrap { padding-left: min(1.375rem, 5vw); padding-right: min(1.375rem, 5vw); }
+.card .tip, .card .say, .action { padding-left: min(1.125rem, 4vw); padding-right: min(1.125rem, 4vw); }
+
 /* Narrow screens: stack the coverage table so each program sits above its coverage period */
 @media (max-width: 30em) {
   .table-wrap thead { position: absolute; width: 1px; height: 1px; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
@@ -297,12 +292,8 @@ footer p { margin: 0 0 0.75rem; }
 
 /* Very tight space (small phone, or large text): drop the decorative icons and arrows, trim padding */
 @media (max-width: 21em) {
-  .topics .icon, .topics a::after { display: none; }
-  .phone { font-size: min(2rem, calc((100vw - 3.2rem) / 8.2)); }
   h1 { font-size: 1.5rem; }
   .site-name { font-size: 1.25rem; }
-  .wrap { padding-left: 0.75rem; padding-right: 0.75rem; }
-  .topics a, .call, .card, .say, .tip, .table-wrap, .card .tip, .card .say { padding-left: 0.75rem; padding-right: 0.75rem; }
 }
 
 /* Extremely tight space (for example a small phone at 200% zoom): slightly smaller text and padding
@@ -313,11 +304,6 @@ footer p { margin: 0 0 0.75rem; }
   h2 { font-size: 1.125rem; }
   .site-name { font-size: 1.125rem; }
   .lede, .say p, .topics .title, .call .who.main, .action { font-size: 1rem; }
-  .wrap { padding-left: 0.625rem; padding-right: 0.625rem; }
-  .topics a, .call, .card, .say, .tip, .table-wrap, .card .tip, .card .say, .action { padding-left: 0.5rem; padding-right: 0.5rem; }
-  .phone { font-size: min(2rem, calc((100vw - 2.4rem) / 8.2)); }
-  a[href^="tel:"]:not(.phone), a[href^="sms:"]:not(.phone) { font-size: min(1em, calc((100vw - 2.4rem) / 8.2)); }
-  .nowrap { font-size: min(1em, calc((100vw - 2.4rem) / 10.5)); }
 }
 
 @media (min-width: 40rem) {

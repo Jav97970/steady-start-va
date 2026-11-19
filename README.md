@@ -28,20 +28,20 @@ To look at the site, open `index.html` in a browser. To publish it, upload the w
 
 ## How to update a phone number
 
-Each phone number is written **three times** in a link: once for the phone to dial, once for screen readers, and once for people to read.
+Each phone number is written **twice** in a link: once for the phone to dial, and once for people to read.
 
 ```html
-<a class="phone" href="tel:18552428282" aria-label="Call Cover Virginia, 1-855-242-8282"><span>Call</span>1-855-242-8282</a>
+<a class="phone" href="tel:18552428282"><span class="label">Call Cover Virginia</span> <span class="num">1-855-<wbr>242-<wbr>8282</span></a>
 ```
 
 - `tel:18552428282` is what the phone dials: digits only, no dashes. Text links use `sms:` in place of `tel:`.
-- `aria-label="Call Cover Virginia, 1-855-242-8282"` is what a screen reader says.
-- `1-855-242-8282` after `</span>` is what people see.
+- `1-855-<wbr>242-<wbr>8282` is what people see and what screen readers and voice control use. The `<wbr>` after each dash is invisible; it lets a number wrap at a dash on very small screens. Keep one after every dash.
+- The words in `label` ("Call Cover Virginia") are part of the link. Keep them matching who the number reaches.
 
 Steps:
 
-1. Search **all** the `.html` files for the old number in both forms (for example `18552428282` and `1-855-242-8282`). The same number can be on several pages.
-2. Change every place you find, in both forms. Make sure the dialed number, the screen-reader label and the visible number all match.
+1. Search **all** the `.html` files for the old number in its digits-only form (for example `18552428282`). The same number can be on several pages. Searching for the dashed form will not find it, because of the `<wbr>` marks.
+2. In every place you find, change the digits after `tel:` or `sms:` and the visible number right after it. Make sure they match.
 3. On each page you changed, confirm the number against the official source linked at the bottom of that page, then update the "Last checked" date there.
 4. Open the page on a phone and tap the number to make sure it dials correctly.
 
