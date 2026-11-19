@@ -104,18 +104,7 @@ a:focus-visible {
 .site-name a { color: var(--sage-dark); text-decoration: none; display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.3rem 0; }
 .logo { flex: none; width: 1.75rem; height: 1.75rem; }
 .site-name a:hover { text-decoration: underline; }
-
-/* Pilot note */
-.pilot {
-  display: inline-block;
-  margin: 1.5rem 0 0;
-  padding: 0.35rem 0.875rem;
-  background: var(--sage-pale);
-  border: 1px solid var(--sage-pale-edge);
-  border-radius: var(--radius);
-  color: var(--fg-2);
-  font-size: 1rem;
-}
+.tagline { margin: 0; color: var(--fg-2); font-size: 0.9375rem; line-height: 1.4; }
 
 /* Headings and text */
 main { padding-bottom: 1.5rem; }
@@ -138,8 +127,12 @@ li::marker { color: var(--sage); }
 .lede { font-size: 1.25rem; line-height: 1.5; color: var(--fg-2); margin-bottom: 2.25rem; }
 
 /* Home: hills illustration above the heading */
-.hero { display: block; width: 100%; height: auto; margin-top: 1.25rem; border-radius: var(--radius); }
-.hero + h1 { margin-top: 1.5rem; }
+.hero { display: block; width: 100%; height: auto; margin-top: 1rem; border-radius: var(--radius); }
+.hero + h1 { margin: 1rem 0 0.75rem; }
+.hero + h1::after { margin-top: 0.625rem; }
+.hero ~ .lede { margin-bottom: 0.5rem; }
+.talk-link { margin: 0 0 1rem; }
+.talk-link a { display: inline-block; padding: 0.4rem 0; }
 
 /* Home: topic cards */
 .topics { list-style: none; margin: 0 0 2.25rem; padding: 0; }
@@ -192,6 +185,8 @@ li::marker { color: var(--sage); }
   margin: 1.75rem 0;
 }
 .call .who { font-weight: 700; margin: 0 0 0.5rem; }
+.call .who.main { font-size: 1.375rem; line-height: 1.3; }
+.call .action + .phone, .call .phone + .phone { margin-top: 0.75rem; }
 .call .note { color: var(--fg-2); margin: 0.75rem 0 0; }
 .call .who + .note { margin-top: 0; }
 
@@ -200,7 +195,7 @@ li::marker { color: var(--sage); }
   display: block;
   padding: 0.35rem 0;
   color: var(--sage);
-  font-size: 2rem;
+  font-size: clamp(1.25rem, 8vw, 2rem);
   font-weight: 700;
   line-height: 1.2;
   font-variant-numeric: tabular-nums;
@@ -234,8 +229,9 @@ li::marker { color: var(--sage); }
   padding: 1.125rem 1.375rem 1.25rem;
   margin: 1.75rem 0;
 }
-.say h2, .tip h2, .tip h3 { font-family: inherit; font-weight: 700; font-size: 1rem; margin: 0 0 0.35rem; color: var(--sage-dark); }
+.say h2, .say h3, .tip h2, .tip h3 { font-family: inherit; font-weight: 700; font-size: 1rem; margin: 0 0 0.35rem; color: var(--sage-dark); }
 .say p { margin: 0; font-size: 1.1875rem; }
+.say p + p { margin-top: 0.75rem; }
 
 /* "Good to know" and "Did you know?" boxes */
 .tip p:last-child, .tip ul { margin-bottom: 0; }
@@ -256,13 +252,12 @@ li::marker { color: var(--sage); }
 .card > h3 { font-size: 1rem; font-weight: 700; margin: 1.25rem 0 0.25rem; }
 .card > p { margin-bottom: 0.75rem; }
 .card .phone { margin-bottom: 0.5rem; }
-.card .tip { margin: 1.25rem 0 0; padding: 1rem 1.125rem; }
+.card .tip, .card .say { margin: 1.25rem 0 0; padding: 1rem 1.125rem; }
 .card .src { margin-top: 1.25rem; padding-top: 0.875rem; }
 .card .src p:last-child { margin-bottom: 0; }
 
 /* Coverage table */
 .table-wrap {
-  overflow-x: auto;
   margin: 0 0 1.125rem;
   background: var(--card);
   border: 1px solid var(--card-edge);
@@ -286,6 +281,26 @@ tbody td { font-weight: 700; }
 /* Footer */
 footer { margin-top: 2.5rem; padding: 1.5rem 0 3.5rem; border-top: 1px solid var(--card-edge); color: var(--fg-2); font-size: 1rem; }
 footer p { margin: 0 0 0.75rem; }
+
+/* Narrow screens: stack the coverage table so each program sits above its coverage period */
+@media (max-width: 30em) {
+  .table-wrap thead { position: absolute; width: 1px; height: 1px; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+  .table-wrap table, .table-wrap tbody, .table-wrap tr, .table-wrap th, .table-wrap td { display: block; }
+  .table-wrap tbody th { border-bottom: 0; padding: 0.875rem 0 0; }
+  .table-wrap tbody td { padding: 0.15rem 0 0.875rem; }
+  h1 { font-size: 1.75rem; }
+}
+
+/* Very tight space (small phone, or large text): drop the decorative icons and arrows, trim padding */
+@media (max-width: 21em) {
+  .topics .icon, .topics a::after { display: none; }
+  body { -webkit-hyphens: auto; hyphens: auto; }
+  .phone { -webkit-hyphens: manual; hyphens: manual; }
+  h1 { font-size: 1.5rem; }
+  .site-name { font-size: 1.25rem; }
+  .wrap { padding-left: 0.75rem; padding-right: 0.75rem; }
+  .topics a, .call, .card, .say, .tip, .table-wrap, .card .tip, .card .say { padding-left: 0.75rem; padding-right: 0.75rem; }
+}
 
 @media (min-width: 40rem) {
   h1 { font-size: 2.5rem; }
